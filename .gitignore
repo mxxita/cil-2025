@@ -1,0 +1,105 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Kaggle
+kaggle.json
+.kaggle/
+data/
+input/
+output/
+working/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project specific
+logs/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.csv
+*.json
+!config/*.json
+!config/*.yaml
+
+# SLURM
+*.out
+*.err
+slurm-*.out
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+.coverage
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Large files
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.bz2
+*.xz
+
+# Model checkpoints and data
+ml-depth-pro/checkpoints/
+monocular_depth/checkpoints/
+*.onnx
+*.tflite
+*.pb
+*.pkl
+*.joblib
+
+# Keep config files
+!config/*.yaml
+!config/*.json
+!setup.py
+!requirements.txt
+!environment.yml 
