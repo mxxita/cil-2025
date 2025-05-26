@@ -72,6 +72,55 @@ The model is evaluated using the following metrics:
 - REL (Relative Error)
 - Delta1, Delta2, Delta3 (Thresholded accuracy)
 
+## Path Configuration
+
+The project uses environment variables to handle paths across different environments (euler cluster, local machine, etc.).
+
+### Setting Up Paths
+
+1. Copy the environment template:
+   ```bash
+   cp .env.template .env
+   ```
+
+2. Edit `.env` to set your paths:
+   ```bash
+   # For euler cluster
+   CIL_BASE_PATH=/cluster/home/yourusername/cil-2025
+   CIL_DATA_PATH=/cluster/scratch/yourusername/courses/cil/monocular_depth
+   CIL_MODELS_PATH=/cluster/home/yourusername/cil-2025/ml-depth-pro/models
+   CIL_OUTPUTS_PATH=/cluster/home/yourusername/cil-2025/ml-depth-pro/outputs
+   CIL_CHECKPOINTS_PATH=/cluster/home/yourusername/cil-2025/checkpoints
+
+   # For local machine
+   CIL_BASE_PATH=/path/to/your/project
+   CIL_DATA_PATH=/path/to/your/data
+   CIL_MODELS_PATH=/path/to/your/models
+   CIL_OUTPUTS_PATH=/path/to/your/outputs
+   CIL_CHECKPOINTS_PATH=/path/to/your/checkpoints
+   ```
+
+3. The `.env` file is git-ignored, so your paths won't be committed.
+
+### Using Paths in Code
+
+```python
+from monocular_depth.config.paths import (
+    get_test_image_path,
+    get_output_path,
+    get_checkpoint_path
+)
+
+# Get paths
+test_image = get_test_image_path()
+output_dir = get_output_path('predictions')
+checkpoint = get_checkpoint_path('model.pt')
+```
+
+### Default Paths
+
+If no environment variables are set, the code will use default paths based on the detected environment (euler or local).
+
 ## License
 
 [Your chosen license] 

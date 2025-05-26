@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -19,15 +20,31 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
+
+# Environment
 .env
 .venv
-env/
 venv/
 ENV/
-env.bak/
-venv.bak/
-.python-version
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+ml-depth-pro/data/
+ml-depth-pro/outputs/
+ml-depth-pro/models/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Logs
+*.log
+logs/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -41,35 +58,7 @@ input/
 output/
 working/
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Project specific
-logs/
-checkpoints/
-*.pt
-*.pth
-*.ckpt
-*.npy
-*.npz
-*.h5
-*.hdf5
-*.csv
-*.json
-!config/*.json
-!config/*.yaml
-
-# SLURM
-*.out
-*.err
-slurm-*.out
-
 # Temporary files
-*.log
 *.tmp
 *.temp
 .coverage
@@ -89,7 +78,6 @@ htmlcov/
 *.xz
 
 # Model checkpoints and data
-ml-depth-pro/checkpoints/
 monocular_depth/checkpoints/
 *.onnx
 *.tflite

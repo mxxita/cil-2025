@@ -4,13 +4,20 @@ import os
 from pathlib import Path
 from typing import Dict, Optional
 
-# Base paths for different clusters
-CLUSTER_PATHS = {
+# Environment variable names
+ENV_BASE_PATH = 'CIL_BASE_PATH'
+ENV_DATA_PATH = 'CIL_DATA_PATH'
+ENV_MODELS_PATH = 'CIL_MODELS_PATH'
+ENV_OUTPUTS_PATH = 'CIL_OUTPUTS_PATH'
+ENV_CHECKPOINTS_PATH = 'CIL_CHECKPOINTS_PATH'
+
+# Default paths for different clusters
+DEFAULT_PATHS = {
     'euler': {
         'base': '/cluster/home/mariberger/cil-2025',
         'data': '/cluster/scratch/mariberger/courses/cil/monocular_depth',
-        'models': '/cluster/home/mariberger/cil-2025/monocular_depth/models',
-        'outputs': '/cluster/home/mariberger/cil-2025/monocular_depth/outputs',
+        'models': '/cluster/home/mariberger/cil-2025/ml-depth-pro/models',
+        'outputs': '/cluster/home/mariberger/cil-2025/ml-depth-pro/outputs',
         'checkpoints': '/cluster/home/mariberger/cil-2025/checkpoints'
     },
     'local': {
@@ -21,6 +28,19 @@ CLUSTER_PATHS = {
         'checkpoints': str(Path(__file__).parent.parent.parent / 'checkpoints')
     }
 }
+
+def get_env_path(env_var: str, default: str) -> str:
+    """
+    Get path from environment variable or use default.
+    
+    Args:
+        env_var: Environment variable name
+        default: Default path if environment variable is not set
+        
+    Returns:
+        str: Path from environment variable or default
+    """
+    return os.getenv(env_var, default)
 
 # Current cluster detection
 def detect_cluster() -> str:
@@ -36,28 +56,31 @@ def detect_cluster() -> str:
 
 # Global variables
 CURRENT_CLUSTER = detect_cluster()
-BASE_PATH = CLUSTER_PATHS[CURRENT_CLUSTER]['base']
-DATA_PATH = CLUSTER_PATHS[CURRENT_CLUSTER]['data']
-MODELS_PATH = CLUSTER_PATHS[CURRENT_CLUSTER]['models']
-OUTPUTS_PATH = CLUSTER_PATHS[CURRENT_CLUSTER]['outputs']
-CHECKPOINTS_PATH = CLUSTER_PATHS[CURRENT_CLUSTER]['checkpoints']
+DEFAULT_CLUSTER_PATHS = DEFAULT_PATHS[CURRENT_CLUSTER]
+
+# Get paths from environment variables or use defaults
+BASE_PATH = get_env_path(ENV_BASE_PATH, DEFAULT_CLUSTER_PATHS['base'])
+DATA_PATH = get_env_path(ENV_DATA_PATH, DEFAULT_CLUSTER_PATHS['data'])
+MODELS_PATH = get_env_path(ENV_MODELS_PATH, DEFAULT_CLUSTER_PATHS['models'])
+OUTPUTS_PATH = get_env_path(ENV_OUTPUTS_PATH, DEFAULT_CLUSTER_PATHS['outputs'])
+CHECKPOINTS_PATH = get_env_path(ENV_CHECKPOINTS_PATH, DEFAULT_CLUSTER_PATHS['checkpoints'])
 
 # Specific paths
-TEST_IMAGE_PATH ='/cluster/home/mariberger/cil-2025/ml-depth-pro/data/example.jpg'
+TEST_IMAGE_PATH = os.path.join(DATA_PATH, 'example.jpg')
 
 def get_path(path_type: str) -> str:
     """
     Get a specific path based on type.
     
     Args:
-        path_type: Type of path ('base', 'data', 'models', 'outputs')
+        path_type: Type of path ('base', 'data', 'models', 'outputs', 'checkpoints')
         
     Returns:
         str: Absolute path
     """
-    if path_type not in CLUSTER_PATHS[CURRENT_CLUSTER]:
+    if path_type not in DEFAULT_CLUSTER_PATHS:
         raise ValueError(f"Unknown path type: {path_type}")
-    return CLUSTER_PATHS[CURRENT_CLUSTER][path_type]
+    return get_env_path(f'CIL_{path_type.upper()}_PATH', DEFAULT_CLUSTER_PATHS[path_type])
 
 def get_test_image_path() -> str:
     """Get the path to the test image."""
