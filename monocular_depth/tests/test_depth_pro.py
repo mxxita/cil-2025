@@ -1,9 +1,15 @@
+"""Test DepthPro model inference."""
+
 import os
 import pytest
 import numpy as np
 from PIL import Image
 import torch
+import torch.nn as nn
+import torchvision.transforms as T
 from monocular_depth.models import DepthProInference
+from monocular_depth.config.paths import get_test_image_path
+import tempfile
 
 def create_test_image(size=(256, 256)):
     """Create a simple test image."""
@@ -85,30 +91,54 @@ def test_process_and_visualize(depth_estimator, test_image_path, tmp_path):
     assert save_path.exists()
     assert isinstance(depth_map, np.ndarray)
 
+def test_depth_pro_inference():
+    """Test DepthPro model inference."""
+    # Load test image
+    image_path = get_test_image_path()
+    image = Image.open(image_path).convert('RGB')
+    
+    # Create model
+    model = DepthProInference()
+    
+    # Prepare input using DepthPro's exact transform
+    transform = T.Compose([
+        T.ToTensor(),
+        T.Lambda(lambda x: x.to(model.device)),
+        T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),  # Normalize to [-1, 1] range
+        T.ConvertImageDtype(torch.float32)
+    ])
+    x = transform(image).unsqueeze(0)  # Add batch dimension
+    
+    # Forward pass
+    with torch.no_grad():
+        output = model(x)
+    
+    # Check output
+    assert isinstance(output, torch.Tensor)
+    assert output.shape == (1, 1, x.shape[2], x.shape[3])  # (batch_size, channels, height, width)
+    assert torch.all(output >= 0) and torch.all(output <= 10)  # Depth in [0, 10] meters
+
 if __name__ == '__main__':
-    # Create a simple test image
-    test_image = create_test_image()
-    test_image_path = "test_image.jpg"
-    test_image.save(test_image_path)
+    # Use the example image from ml-depth-pro
+    example_image_path = os.path.join("ml-depth-pro", "data", "example.jpg")
+    if not os.path.exists(example_image_path):
+        raise FileNotFoundError(f"Example image not found at {example_image_path}")
     
     try:
         # Initialize the model
         print("Initializing DepthPro model...")
-        depth_estimator = DepthProInference(device='cpu')
+        depth_estimator = DepthProInference(device='cuda' if torch.cuda.is_available() else 'cpu')
         
         # Test the full pipeline
         print("Testing depth estimation pipeline...")
         depth_map = depth_estimator.process_and_visualize(
-            test_image_path,
+            example_image_path,
             save_path="test_depth_map.png"
         )
         print("Test completed successfully!")
         print(f"Depth map shape: {depth_map.shape}")
         print(f"Depth map range: [{depth_map.min():.3f}, {depth_map.max():.3f}]")
         
-    finally:
-        # Cleanup
-        if os.path.exists(test_image_path):
-            os.remove(test_image_path)
-        if os.path.exists("test_depth_map.png"):
-            os.remove("test_depth_map.png") 
+    except Exception as e:
+        print(f"Error during test: {str(e)}")
+        raise 

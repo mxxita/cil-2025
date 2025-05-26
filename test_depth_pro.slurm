@@ -8,6 +8,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16G
+#SBATCH --mem-per-gpu=16G
+#SBATCH --partition=gpu
 
 # Load required modules
 module load gcc/8.2.0
