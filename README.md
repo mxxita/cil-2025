@@ -18,54 +18,37 @@ monocular_depth/
 │   └── create_prediction_csv.py  # Convert predictions to CSV format
 ├── utils/                 # Utility functions
 │   └── helpers.py         # General helper functions
+└── config/
+│   └── paths.py         # UPDATE
+│   └── device.py         # General helper functions
 └── __init__.py
 
-config/                    # Configuration files
+
 ml-depth-pro/             # Apple's DepthPro model (git submodule)
 requirements.txt          # Python dependencies
 setup.py                  # Package installation
 ```
 
 ## Installation
+# 1. Clone the repo with submodules
+git clone --recurse-submodules https://github.com/mxxita/cil-2025.git
+cd cil-2025
 
-### 1. Create Conda Environment
+# 2. If submodules weren't pulled correctly:
+git submodule update --init --recursive
 
-```bash
-conda create -n depth-pro python=3.9 -y
+# 3. Create & activate conda environment
+conda env create -f environment.yml
 conda activate depth-pro
-```
 
-### 2. Clone Repository
-
-```bash
-git clone <your-repo-url>
-cd monocular_depth
-```
-
-### 3. Install DepthPro Dependencies
-
-Clone Apple's DepthPro repository and install:
-
-```bash
-git clone https://github.com/apple/ml-depth-pro.git
+# 4. Install DepthPro (Apple submodule)
 cd ml-depth-pro
 pip install -e .
-```
-
-Download pretrained checkpoints:
-
-```bash
-source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` directory
 cd ..
-```
 
-### 4. Install Project
-
-```bash
+# 5. Install your package (monocular_depth)
 pip install -e .
-```
 
-This will install the package in editable mode along with all required dependencies.
 
 ## Usage
 
