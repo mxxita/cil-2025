@@ -1,0 +1,27 @@
+name: depth-pro
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.9
+  - pytorch>=1.12.0
+  - torchvision
+  - torchaudio
+  - cudatoolkit=11.8
+  - pip
+  - pip:
+    - matplotlib
+    - pillow
+    - tqdm
+    - pyyaml
+    - tensorboard
+    - psutil
+    - opencv-python
+    - numpy
+    - scipy
+    - scikit-learn
+    - timm
+    - transformers
+    - accelerate
+    - -e ./ml-depth-pro  # Install depth_pro package in development mode 
