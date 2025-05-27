@@ -8,7 +8,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 # PATHS
 OUTPUT_DIR = os.getenv("OUTPUT_DIR", str(PROJECT_ROOT / "outputs"))
-DATA_DIR = "/Users/maritaberger/cil-2025/cil-2025/monocular_depth/data/"
+DATA_DIR = os.getenv("DATA_DIR", "/cluster/scratch/mariberger/monocular_depth/data/")
 
 # Create directories if they don't exist
 os.makedirs(OUTPUT_DIR, exist_ok=True)

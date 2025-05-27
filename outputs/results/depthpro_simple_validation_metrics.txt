@@ -1,0 +1,8 @@
+=== DepthPro Simple Wrapper - Validation Metrics ===
+MAE: 0.4109
+RMSE: 0.9252
+siRMSE: 0.1113
+REL: 0.1328
+Delta1: 0.8631
+Delta2: 0.9690
+Delta3: 0.9873

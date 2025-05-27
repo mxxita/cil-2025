@@ -1,4 +1,6 @@
 import os
+
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -96,7 +98,8 @@ def main():
     # Load pretrained model
     print("Loading pretrained model...")
     
-    model = DepthProInference(prefer_cpu=True, enable_training=True) # Load model with trainable MLP head
+    model = DepthProInference(prefer_cpu=False, enable_training=True) # Load model with trainable MLP head
+    model.to(DEVICE)
 
 
     print(f"Using device: {DEVICE}")

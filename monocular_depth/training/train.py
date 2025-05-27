@@ -35,6 +35,7 @@ def train_model(
 
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1}/{num_epochs}")
+        torch.cuda.empty_cache() 
 
         # Training phase
         model.train()
@@ -183,11 +184,11 @@ def train_model(
             print(f"Error: No valid training samples in epoch {epoch+1}")
             break
         train_loss /= train_samples
-        train_losses.append(train_loss)
+        train_losses.append(train_loss) 
 
         # Epoch-level validation phase
         model.eval()
-        val_loss = torch.tensor(0.0, device=device)
+        val_loss = 0.0
         val_samples = 0
 
         with torch.no_grad():
@@ -229,14 +230,14 @@ def train_model(
                         )
                         continue
 
-                    val_loss += loss * inputs.size(0)
+                    val_loss += loss.item() * inputs.size(0)
                     val_samples += inputs.size(0)
                     
                 except RuntimeError as e:
                     print(f"Error in epoch validation batch {batch_idx+1}: {str(e)}")
                     continue
 
-        print(f"Epoch {epoch+1} Validation Loss: {val_loss.item():.4f}")
+        print(f"Epoch {epoch+1} Validation Loss: {val_loss:.4f}")
                 
         with open(
                 os.path.join(results_dir, "in_epoch_val_losses.txt"), "a"
@@ -248,17 +249,17 @@ def train_model(
             break
 
         val_loss = val_loss / val_samples
-        val_losses.append(val_loss.item())
+        val_losses.append(val_loss)
 
         print(
-            f"Train Loss: {train_loss:.4f}, Epoch Validation Loss: {val_loss.item():.4f}"
+            f"Train Loss: {train_loss:.4f}, Epoch Validation Loss: {val_loss:.4f}"
         )
 
         # Save the best model based on epoch-level validation loss
         if val_loss < best_val_loss and not (
             torch.isnan(val_loss) or torch.isinf(val_loss)
         ):
-            best_val_loss = val_loss.item()
+            best_val_loss = val_loss
             best_epoch = epoch + 1
             try:
                 torch.save(
@@ -266,7 +267,7 @@ def train_model(
                 )
                 model_saved = True
                 print(
-                    f"New best model saved at epoch {epoch+1} with epoch validation loss: {val_loss.item():.4f}"
+                    f"New best model saved at epoch {epoch+1} with epoch validation loss: {val_loss:.4f}"
                 )
             except Exception as e:
                 print(f"Error saving model: {e}")

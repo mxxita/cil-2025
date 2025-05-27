@@ -1,12 +1,12 @@
 # Data paths
 data:
-  train_dir: "data/train/train"
-  test_dir: "data/test/test"
-  train_list: "data/train/train_list.txt"
-  test_list: "data/test/test_list.txt"
-  output_dir: "output"
-  results_dir: "output/results"
-  predictions_dir: "output/predictions"
+  train_dir: "/cluster/scratch/mariberger/monocular_depth/data/train/"
+  test_dir: "/cluster/scratch/mariberger/monocular_depth/data/test/"
+  train_list: "/cluster/scratch/mariberger/monocular_depth/data/train_list.txt"
+  test_list: "/cluster/scratch/mariberger/monocular_depth/data/test_list.txt"
+  output_dir: "/cluster/scratch/mariberger/monocular_depth/outputs"
+  results_dir: "/cluster/scratch/mariberger/monocular_depth/outputs/results"
+  predictions_dir: "/cluster/scratch/mariberger/monocular_depth/outputs/predictions"
 
 # Model parameters
 model:

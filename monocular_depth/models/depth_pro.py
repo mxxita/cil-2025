@@ -3,6 +3,11 @@ import torch.nn as nn
 from depth_pro import create_model_and_transforms
 from typing import Tuple
 
+class ModelOutput:
+    """Simple container to match expected output format"""
+    def __init__(self, predicted_depth):
+        self.predicted_depth = predicted_depth
+
 class DepthProInference(nn.Module):
     """Wrapper class for DepthPro model inference, matching UNet interface."""
     
@@ -12,7 +17,7 @@ class DepthProInference(nn.Module):
         self.model, self.transform = create_model_and_transforms()
         self.model.eval()
     
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> ModelOutput:
         """
         Forward pass.
         
@@ -20,15 +25,19 @@ class DepthProInference(nn.Module):
             x: Input tensor of shape (batch_size, in_channels, height, width)
             
         Returns:
-            Output tensor of shape (batch_size, out_channels, height, width)
+            ModelOutput object with predicted_depth attribute
         """
-        # Perform inference
+        # Perform inference without f_px parameter (let DepthPro auto-detect)
         with torch.no_grad():
-            prediction = self.model.infer(x, f_px=1000.0)
+            prediction = self.model.infer(x)
             depth_map = prediction["depth"]  # Depth in meters
             
-        # Scale depth map to [0, 10] range to match UNet output
-        depth = 1.0 / (depth_map + 1e-6)
-        depth = torch.clamp(depth, 0.0, 10.0)  # Optional: match ground truth range
+        # Ensure proper batch dimensions
+        if depth_map.dim() == 2:
+            # Single image: (H, W) -> (1, 1, H, W)
+            depth_map = depth_map.unsqueeze(0).unsqueeze(0)
+        elif depth_map.dim() == 3:
+            # Batch of images: (B, H, W) -> (B, 1, H, W)
+            depth_map = depth_map.unsqueeze(1)
         
-        return depth_map 
+        return ModelOutput(depth_map) 

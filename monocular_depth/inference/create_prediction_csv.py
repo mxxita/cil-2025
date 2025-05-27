@@ -8,11 +8,11 @@ from tqdm import tqdm
 
 # Path definitions
 MODEL_DIR = "dpt_hybrid_midas"
-model_output_dir = os.path.join("..", "models", MODEL_DIR, "output")
-predictions_dir = os.path.join(model_output_dir, "predictions")
-output_csv = os.path.join(model_output_dir, "predictions.csv")
+model_output_dir = "/cluster/home/mariberger/cil-2025/outputs"#/cluster/scratch/mariberger/monocular_depth/models/dpt_hybrid_midas/outputs" # os.path.join("..", "models", MODEL_DIR, "output")
+predictions_dir ="/cluster/home/mariberger/cil-2025/outputs/predictions01" #"/cluster/scratch/mariberger/monocular_depth/models/dpt_hybrid_midas/outputs/predictions01" # os.path.join(model_output_dir, "predictions01")
+output_csv = "predictions.csv" # os.path.join(model_output_dir, "predictions.csv")
 
-data_dir = "/cluster/courses/cil/monocular_depth/data"
+data_dir = "/cluster/scratch/mariberger/monocular_depth/data"
 test_list_file = os.path.join(data_dir, "test_list.txt")
 
 
