@@ -67,6 +67,16 @@ htmlcov/
 .ruff_cache/
 .mypy_cache/
 
+.npy
+*.npy
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.webp
+
 # Large files
 *.tar.gz
 *.zip
