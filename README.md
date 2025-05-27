@@ -108,19 +108,6 @@ data/ (wie am student cluster)
 ├── val_list.txt           # Validation file pairs
 └── test_list.txt          # Test file list
 ```
-
-### List File Format
-
-Each line contains space-separated paths:
-```
-rgb/image001.jpg depth/image001.npy
-rgb/image002.jpg depth/image002.npy
-```
-
-For inference-only (no ground truth depth):
-```
-rgb/image001.jpg
-rgb/image002.jpg
 ```
 
 ## Inference Pipeline
