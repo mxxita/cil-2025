@@ -29,32 +29,53 @@ requirements.txt          # Python dependencies
 setup.py                  # Package installation
 ```
 
-## Installation
-### 1. Clone the repo with submodules
+
+## 🛠️ Installation
+
+### 1 Clone the repository with submodules
+
 ```bash
 git clone --recurse-submodules https://github.com/mxxita/cil-2025.git
 cd cil-2025
 ```
 
-### 2. If submodules weren't pulled correctly:
+---
+
+### 2 (Optional) If submodules weren’t pulled correctly
+
 ```bash
 git submodule update --init --recursive
 ```
-### 3. Create & activate conda environment
+
+---
+
+### 3 Create and activate the Conda environment
+
 ```bash
 conda env create -f environment.yml
 conda activate depth-pro
 ```
-### 4. Install DepthPro (Apple submodule)
+
+---
+
+### 4 Install DepthPro (Apple submodule)
+
 ```bash
 cd ml-depth-pro
 pip install -e .
 cd ..
 ```
-### 5. Install your package (monocular_depth)
+
+---
+
+### 5 Install your own project (monocular_depth)
+
 ```bash
 pip install -e .
 ```
+"""
+
+
 
 ## Usage
 
