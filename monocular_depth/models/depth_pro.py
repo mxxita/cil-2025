@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from ml_depth_pro.src.depth_pro.depth_pro import create_model_and_transforms
+from depth_pro import create_model_and_transforms
 from typing import Tuple
 
 class DepthProInference(nn.Module):
@@ -9,7 +9,7 @@ class DepthProInference(nn.Module):
     def __init__(self):
         """Initialize the DepthPro model."""
         super().__init__()
-        self.model, _ = create_model_and_transforms(device=torch.device("cuda"))
+        self.model, self.transform = create_model_and_transforms()
         self.model.eval()
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -30,5 +30,5 @@ class DepthProInference(nn.Module):
         # Scale depth map to [0, 10] range to match UNet output
         depth = 1.0 / (depth_map + 1e-6)
         depth = torch.clamp(depth, 0.0, 10.0)  # Optional: match ground truth range
-            
+        
         return depth_map 

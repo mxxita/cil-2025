@@ -1,6 +1,6 @@
 """Training and evaluation modules."""
 
-from .trainer import Trainer
-from .metrics import DepthMetrics
+from .train import train_model
+from .loss import SILogLoss
  
-__all__ = ['Trainer', 'DepthMetrics'] 
+__all__ = ['train_model', 'SILogLoss'] 

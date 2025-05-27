@@ -1,4 +1,5 @@
-from .unet import SimpleUNet
-from .depth_pro import DepthProInference
+"""Model architectures for monocular depth estimation."""
 
-__all__ = ['SimpleUNet', 'DepthProInference'] 
+from .apple.depth import DepthProInference
+
+__all__ = ['DepthProInference'] 

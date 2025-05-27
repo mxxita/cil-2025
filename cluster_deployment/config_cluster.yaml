@@ -1,0 +1,65 @@
+# Cluster Configuration for Depth Estimation
+
+# Model Configuration
+model:
+  name: "DepthProInference"
+  enable_training: true
+  prefer_cpu: false  # Use GPU on cluster
+  hidden_dim: 512
+
+# Training Configuration
+training:
+  num_epochs: 50
+  batch_size: 4  # Reduced from 8 to reduce memory usage
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  gradient_clip: 1.0
+  
+  # Scheduler
+  scheduler:
+    type: "StepLR"
+    step_size: 20
+    gamma: 0.5
+
+# Data Configuration
+data:
+  input_size: [426, 560]
+  num_workers: 2  # Reduced from 8 to save massive memory
+  pin_memory: true
+  persistent_workers: false  # Critical: prevents workers from keeping data in memory
+  train_split: 0.85
+  
+  # Data paths (will be overridden by command line)
+  train_dir: "monocular_depth/data/train/"
+  test_dir: "monocular_depth/data/test/"
+  train_list: "monocular_depth/data/train_list.txt"
+  test_list: "monocular_depth/data/test_list.txt"
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["MAE", "RMSE", "siRMSE", "REL", "Delta1", "Delta2", "Delta3", "LogRMSE"]
+  save_predictions: true
+  save_visualizations: true
+  max_vis_samples: 20
+
+# Checkpointing
+checkpointing:
+  save_best: true
+  save_every: 10
+  max_checkpoints: 5
+  
+# Logging
+logging:
+  level: "INFO"
+  log_every: 10
+  tensorboard: true
+  wandb:
+    enabled: false  # Set to true if using wandb
+    project: "depth_estimation"
+    entity: "your_username"
+
+# Hardware
+hardware:
+  device: "auto"  # auto, cpu, cuda
+  mixed_precision: true
+  compile_model: false  # PyTorch 2.0 compile 
