@@ -103,15 +103,7 @@ dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 ### Dataset Structure
 
 ```
-data/
-├── rgb/                   # RGB images
-│   ├── image001.jpg
-│   ├── image002.jpg
-│   └── ...
-├── depth/                 # Depth maps (optional for inference)
-│   ├── image001.npy
-│   ├── image002.npy
-│   └── ...
+data/ (wie am student cluster)
 ├── train_list.txt         # Training file pairs
 ├── val_list.txt           # Validation file pairs
 └── test_list.txt          # Test file list
