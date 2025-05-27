@@ -44,12 +44,18 @@ cd monocular_depth
 
 ### 3. Install DepthPro Dependencies
 
-Clone Apple's DepthPro repository:
+Clone Apple's DepthPro repository and install:
 
 ```bash
 git clone https://github.com/apple/ml-depth-pro.git
 cd ml-depth-pro
 pip install -e .
+```
+
+Download pretrained checkpoints:
+
+```bash
+source get_pretrained_models.sh   # Files will be downloaded to `checkpoints` directory
 cd ..
 ```
 
@@ -64,6 +70,36 @@ This will install the package in editable mode along with all required dependenc
 ## Usage
 
 ### Basic Inference with DepthPro
+
+#### Using Command Line
+
+```bash
+# Run prediction on a single image:
+depth-pro-run -i ./data/example.jpg
+# Run `depth-pro-run -h` for available options.
+```
+
+#### Using Python API
+
+```python
+from PIL import Image
+import depth_pro
+
+# Load model and preprocessing transform
+model, transform = depth_pro.create_model_and_transforms()
+model.eval()
+
+# Load and preprocess an image. Habe f_px ignoriert
+image, _, f_px = depth_pro.load_rgb("path/to/your/image.jpg")
+image = transform(image)
+
+# Run inference.
+prediction = model.infer(image, f_px=f_px)
+depth = prediction["depth"]  # Depth in [m].
+focallength_px = prediction["focallength_px"]  # Focal length in pixels.
+```
+
+#### Using Project Wrapper
 
 ```python
 from monocular_depth.models.depth_pro import DepthProInference
