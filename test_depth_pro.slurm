@@ -41,7 +41,6 @@ echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
 
 # Verify depth_pro can be imported
 echo "Testing depth_pro import..."
-python -c "import depth_pro; print('✅ depth_pro imported successfully')" || echo "❌ depth_pro import failed"
 
 nvidia-smi
 

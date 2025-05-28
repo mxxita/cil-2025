@@ -4,6 +4,7 @@ import os
 import torch
 import torch.nn as nn
 from tqdm import tqdm
+import math
 
 from monocular_depth.utils.helpers import print_tqdm
 
@@ -257,7 +258,7 @@ def train_model(
 
         # Save the best model based on epoch-level validation loss
         if val_loss < best_val_loss and not (
-            torch.isnan(val_loss) or torch.isinf(val_loss)
+            math.isnan(val_loss) or math.isinf(val_loss)
         ):
             best_val_loss = val_loss
             best_epoch = epoch + 1
